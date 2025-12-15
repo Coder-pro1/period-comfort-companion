@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --comfort-bg: #fef9f3;
+    --comfort-text: #4a2c2a;
+    --comfort-accent: #ff6b9d;
+  }
+  
+  body {
+    @apply bg-comfort-cream-50 text-comfort-cream-900;
+  }
+}
+
+@layer utilities {
+  .comfort-shadow {
+    box-shadow: 0 10px 40px rgba(255, 107, 157, 0.1), 0 2px 8px rgba(255, 107, 157, 0.06);
+  }
+  
+  .comfort-shadow-lg {
+    box-shadow: 0 20px 60px rgba(255, 107, 157, 0.15), 0 4px 12px rgba(255, 107, 157, 0.1);
+  }
+  
+  .handwriting {
+    @apply font-handwritten;
+  }
+}
+
+/* Soft Animations */
+@keyframes chocolate-rain {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes heart-float {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes warm-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 107, 157, 0.6);
+  }
+}
+
+.animate-chocolate-rain {
+  animation: chocolate-rain 3s linear;
+}
+
+.animate-heart-float {
+  animation: heart-float 3s ease-out;
+}
+
+.animate-warm-glow {
+  animation: warm-glow 2s ease-in-out infinite;
+}
