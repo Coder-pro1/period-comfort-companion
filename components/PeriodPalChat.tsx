@@ -115,9 +115,7 @@ export default function PeriodPalChat() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+    // Removed auto-scroll - users can manually scroll if needed
 
     // Update initial message when mood changes
     useEffect(() => {
@@ -134,6 +132,10 @@ export default function PeriodPalChat() {
         setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
         setIsLoading(true);
 
+        console.log('=== Sending message ===');
+        console.log('Current mood:', currentMood);
+        console.log('User message:', userMessage);
+
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -141,20 +143,24 @@ export default function PeriodPalChat() {
                 body: JSON.stringify({ message: userMessage, mood: currentMood }),
             });
 
+            console.log('Response status:', response.status);
             const data = await response.json();
+            console.log('Response data:', data);
 
             if (data.error) {
+                console.error('API Error:', data.error);
                 setMessages(prev => [...prev, {
                     role: 'assistant',
-                    content: '💕 I\'m having trouble responding right now. But I\'m still here for you!'
+                    content: `I'm having trouble responding right now. But I'm still here for you! (Error: ${data.error})`
                 }]);
             } else {
                 setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
             }
         } catch (error) {
+            console.error('Fetch error:', error);
             setMessages(prev => [...prev, {
                 role: 'assistant',
-                content: '💕 Connection hiccup! Want to try again?'
+                content: 'Connection hiccup! Want to try again?'
             }]);
         } finally {
             setIsLoading(false);

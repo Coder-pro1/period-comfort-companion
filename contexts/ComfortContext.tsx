@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 // Character types available in the app
-export type CharacterType = 'judy' | 'emma' | 'sarah';
+export type CharacterType = 'judy' | 'kanao' | 'vani';
 
 // Context interface - only manages character selection
 interface ComfortContextType {

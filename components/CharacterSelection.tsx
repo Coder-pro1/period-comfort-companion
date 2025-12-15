@@ -11,13 +11,13 @@ const characters = [
         color: 'from-pink-400 to-rose-400',
     },
     {
-        id: 'emma' as CharacterType,
-        name: 'Emma',
+        id: 'kanao' as CharacterType,
+        name: 'Kanao',
         color: 'from-purple-400 to-indigo-400',
     },
     {
-        id: 'sarah' as CharacterType,
-        name: 'Sarah',
+        id: 'vani' as CharacterType,
+        name: 'Vani',
         color: 'from-blue-400 to-cyan-400',
     },
 ];
@@ -63,8 +63,8 @@ export default function CharacterSelection() {
                             {/* Emoji fallback */}
                             <div className="emoji-placeholder absolute inset-0 hidden items-center justify-center text-2xl bg-gradient-to-br from-pink-200 to-purple-200 rounded-full">
                                 {character.id === 'judy' && '👧'}
-                                {character.id === 'emma' && '👩'}
-                                {character.id === 'sarah' && '🧑‍🦰'}
+                                {character.id === 'kanao' && '👩'}
+                                {character.id === 'vani' && '🧑‍🦰'}
                             </div>
                         </div>
 
