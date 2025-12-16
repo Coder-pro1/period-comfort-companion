@@ -54,89 +54,103 @@ export default function Shop() {
     };
 
     return (
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-            {/* Header with Avatar */}
-            <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-300 shadow-lg flex-shrink-0">
-                    <Image
-                        src={`/assets/characters/${selectedCharacter}/bf-shop.png`}
-                        alt={selectedCharacter}
-                        width={64}
-                        height={64}
-                        className="object-cover w-full h-full"
-                        onError={(e) => {
-                            e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64"%3E%3Ctext x="50%%" y="50%%" font-size="32" text-anchor="middle" dy=".3em"%3E🛍️%3C/text%3E%3C/svg%3E';
-                        }}
-                    />
+        <>
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-xl relative z-10 w-full">
+                {/* Header with Avatar */}
+                <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-300 shadow-lg flex-shrink-0">
+                        <Image
+                            src={`/assets/characters/${selectedCharacter}/bf-shop.png`}
+                            alt={selectedCharacter}
+                            width={64}
+                            height={64}
+                            className="object-cover w-full h-full"
+                            onError={(e) => {
+                                e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64"%3E%3Ctext x="50%%" y="50%%" font-size="32" text-anchor="middle" dy=".3em"%3E🛍️%3C/text%3E%3C/svg%3E';
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                            🛍️ Shop
+                        </h2>
+                        <p className="text-sm text-gray-600">{shopItems.filter((item: ShopItem) => !purchasedItems.includes(item.id)).length} items available</p>
+                    </div>
                 </div>
-                <div>
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                        🛍️ Shop
-                    </h2>
-                    <p className="text-sm text-gray-600">{shopItems.filter((item: ShopItem) => !purchasedItems.includes(item.id)).length} items available</p>
+
+                {/* Badge Grid */}
+                <div className="grid grid-cols-5 gap-3">
+                    {shopItems
+                        .filter((item: ShopItem) => !purchasedItems.includes(item.id)) // Only show items not yet purchased
+                        .map((item: ShopItem) => {
+                            const canAfford = coins >= item.price;
+
+                            return (
+                                <motion.div
+                                    key={item.id}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={() => setSelectedItem(item)}
+                                    className="relative cursor-pointer"
+                                >
+                                    {/* Locked Badge with Blur Effect */}
+                                    <div className={`aspect-square rounded-xl overflow-hidden border-2 ${canAfford ? 'border-purple-300' : 'border-gray-300'
+                                        } bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative`}>
+                                        {/* Lock Icon Overlay */}
+                                        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                                            <div className="text-4xl">🔒</div>
+                                        </div>
+                                        {/* Blurred Preview */}
+                                        <div className="text-3xl opacity-30 blur-sm">
+                                            {item.category === 'image' ? '📸' : item.category === 'voice' ? '🎙️' : '🎁'}
+                                        </div>
+                                    </div>
+
+                                    {/* Name & Price */}
+                                    <div className="text-center mt-1">
+                                        <div className="text-xs font-semibold text-gray-800 truncate">{item.name}</div>
+                                        <div className={`text-xs font-bold ${canAfford ? 'text-yellow-600' : 'text-red-500'}`}>
+                                            💰{item.price}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
                 </div>
+
+                {/* Empty State when all items are purchased */}
+                {shopItems.filter((item: ShopItem) => !purchasedItems.includes(item.id)).length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                        <div className="text-5xl mb-3">🎉</div>
+                        <p className="font-semibold">You own everything!</p>
+                        <p className="text-sm">Check your collection →</p>
+                    </div>
+                )}
             </div>
 
-            {/* Badge Grid */}
-            <div className="grid grid-cols-5 gap-3">
-                {shopItems
-                    .filter((item: ShopItem) => !purchasedItems.includes(item.id)) // Only show items not yet purchased
-                    .map((item: ShopItem) => {
-                        const canAfford = coins >= item.price;
-
-                        return (
-                            <motion.div
-                                key={item.id}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => setSelectedItem(item)}
-                                className="relative cursor-pointer"
-                            >
-                                {/* Locked Badge with Blur Effect */}
-                                <div className={`aspect-square rounded-xl overflow-hidden border-2 ${canAfford ? 'border-purple-300' : 'border-gray-300'
-                                    } bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative`}>
-                                    {/* Lock Icon Overlay */}
-                                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                                        <div className="text-4xl">🔒</div>
-                                    </div>
-                                    {/* Blurred Preview */}
-                                    <div className="text-3xl opacity-30 blur-sm">
-                                        {item.category === 'image' ? '📸' : item.category === 'voice' ? '🎙️' : '🎁'}
-                                    </div>
-                                </div>
-
-                                {/* Name & Price */}
-                                <div className="text-center mt-1">
-                                    <div className="text-xs font-semibold text-gray-800 truncate">{item.name}</div>
-                                    <div className={`text-xs font-bold ${canAfford ? 'text-yellow-600' : 'text-red-500'}`}>
-                                        💰{item.price}
-                                    </div>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
-            </div>
-
-            {/* Empty State when all items are purchased */}
-            {shopItems.filter((item: ShopItem) => !purchasedItems.includes(item.id)).length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                    <div className="text-5xl mb-3">🎉</div>
-                    <p className="font-semibold">You own everything!</p>
-                    <p className="text-sm">Check your collection →</p>
-                </div>
-            )}
-
-            {/* Modal */}
+            {/* Modal - Outside main container for proper z-indexing */}
             <AnimatePresence>
                 {selectedItem && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedItem(null)}>
+                    <div
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-2 md:p-4 overflow-y-auto"
+                        onClick={() => setSelectedItem(null)}
+                    >
                         <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white rounded-3xl p-6 max-w-md w-full"
+                            className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 max-w-md w-full my-auto relative shadow-2xl"
                         >
+                            {/* Close Button (Top Right) */}
+                            <button
+                                onClick={() => setSelectedItem(null)}
+                                className="absolute top-2 right-2 md:top-4 md:right-4 w-8 h-8 md:w-10 md:h-10 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold z-10 transition-colors"
+                                aria-label="Close"
+                            >
+                                ✕
+                            </button>
+
                             {/* Locked Preview for Images */}
                             {selectedItem.category === 'image' && (
                                 <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
@@ -153,8 +167,8 @@ export default function Shop() {
                                     />
                                     {/* Lock Icon Overlay */}
                                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                        <div className="bg-white/90 rounded-full p-6 shadow-2xl">
-                                            <div className="text-6xl">🔒</div>
+                                        <div className="bg-white/90 rounded-full p-4 md:p-6 shadow-2xl">
+                                            <div className="text-4xl md:text-6xl">🔒</div>
                                         </div>
                                     </div>
                                 </div>
@@ -163,11 +177,11 @@ export default function Shop() {
                             {/* Locked Preview for Voice */}
                             {selectedItem.category === 'voice' && (
                                 <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
-                                    <div className="text-9xl opacity-30 blur-sm">🎙️</div>
+                                    <div className="text-7xl md:text-9xl opacity-30 blur-sm">🎙️</div>
                                     {/* Lock Icon Overlay */}
                                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                        <div className="bg-white/90 rounded-full p-6 shadow-2xl">
-                                            <div className="text-6xl">🔒</div>
+                                        <div className="bg-white/90 rounded-full p-4 md:p-6 shadow-2xl">
+                                            <div className="text-4xl md:text-6xl">🔒</div>
                                         </div>
                                     </div>
                                 </div>
@@ -176,28 +190,41 @@ export default function Shop() {
                             {/* Locked Preview for Bundles */}
                             {selectedItem.category === 'combo' && (
                                 <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
-                                    <div className="text-9xl opacity-30 blur-sm">🎁</div>
+                                    {selectedItem.image ? (
+                                        <Image
+                                            src={selectedItem.image}
+                                            alt={selectedItem.name}
+                                            width={400}
+                                            height={400}
+                                            className="object-cover w-full h-full blur-lg scale-110 opacity-50"
+                                            onError={(e) => {
+                                                e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Ctext x="50%%" y="50%%" font-size="100" text-anchor="middle" dy=".3em"%3E🎁%3C/text%3E%3C/svg%3E';
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="text-7xl md:text-9xl opacity-30 blur-sm">🎁</div>
+                                    )}
                                     {/* Lock Icon Overlay */}
                                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                        <div className="bg-white/90 rounded-full p-6 shadow-2xl">
-                                            <div className="text-6xl">🔒</div>
+                                        <div className="bg-white/90 rounded-full p-4 md:p-6 shadow-2xl">
+                                            <div className="text-4xl md:text-6xl">🔒</div>
                                         </div>
                                     </div>
                                 </div>
                             )}
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">{selectedItem.name}</h3>
-                            <p className="text-gray-600 mb-4">{selectedItem.description}</p>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">{selectedItem.name}</h3>
+                            <p className="text-sm md:text-base text-gray-600 mb-4">{selectedItem.description}</p>
 
                             {purchasedItems.includes(selectedItem.id) ? (
-                                <div className="bg-green-100 text-green-700 text-center py-3 rounded-xl font-semibold mb-3">
+                                <div className="bg-green-100 text-green-700 text-center py-2 md:py-3 rounded-xl font-semibold mb-3">
                                     ✓ Already Owned
                                 </div>
                             ) : (
                                 <button
                                     onClick={() => handlePurchase(selectedItem)}
                                     disabled={coins < selectedItem.price}
-                                    className={`w-full py-3 rounded-xl font-semibold mb-3 ${coins >= selectedItem.price
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
+                                    className={`w-full py-3 rounded-xl font-semibold mb-3 transition-colors ${coins >= selectedItem.price
+                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]'
                                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         }`}
                                 >
@@ -207,7 +234,7 @@ export default function Shop() {
 
                             <button
                                 onClick={() => setSelectedItem(null)}
-                                className="w-full py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
+                                className="w-full py-2 md:py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
                             >
                                 Close
                             </button>
@@ -215,6 +242,6 @@ export default function Shop() {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+        </>
     );
 }

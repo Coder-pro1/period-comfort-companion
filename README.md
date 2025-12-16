@@ -2,6 +2,11 @@
 
 A specialized Next.js web app designed to provide comfort, distraction, and care during your period. Built with empathy and warmth, this app offers AI-powered emotional support, interactive games to earn rewards, a personalized shop system, and calming activities—all wrapped in a beautiful, responsive interface.
 
+<div align="center">
+  <img src="/assets/mainscreen.png" width="45%" alt="Main Screen" style="margin-right: 10px;" />
+  <img src="/assets/gamescreen.png" width="45%" alt="Game Screen" />
+</div>
+
 ## ✨ Features
 
 - **AI Chat Companion** - Empathetic AI assistant powered by Google Gemini with mood-based responses
@@ -21,9 +26,6 @@ A specialized Next.js web app designed to provide comfort, distraction, and care
 - **Styling:** Tailwind CSS
 - **Animations:** Framer Motion
 - **AI:** Google Gemini API
-- **State Management:** React Context API
-- **Storage:** LocalStorage for persistent data
-- **UI Components:** Custom React components with Next.js Image optimization
 - **Deployment:** Vercel-ready
 
 ## 🚀 Getting Started
@@ -39,13 +41,3 @@ npm run dev
 npm run build
 ```
 
-## 📝 Configuration
-
-Add your Google Gemini API key to `.env.local`:
-```
-NEXT_PUBLIC_GEMINI_API_KEY=your_api_key_here
-```
-
-## 📄 License
-
-MIT License - Feel free to use and modify for your own projects.

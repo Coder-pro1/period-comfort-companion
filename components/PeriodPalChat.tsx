@@ -136,6 +136,20 @@ export default function PeriodPalChat() {
         console.log('Current mood:', currentMood);
         console.log('User message:', userMessage);
 
+        // Special check for "I love u" (case-insensitive)
+        const lowerMsg = userMessage.toLowerCase();
+        if (lowerMsg.includes('i love you') || lowerMsg.includes('i love u') || lowerMsg.includes('luv u')) {
+            // Simulate typing delay for natural feel
+            setTimeout(() => {
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: 'I love you moree! 💕'
+                }]);
+                setIsLoading(false);
+            }, 1000);
+            return;
+        }
+
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
