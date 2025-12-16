@@ -114,6 +114,7 @@ export default function GuessingGame({ onClose }: GuessingGameProps) {
                     content: data.message || 'Nope! Keep trying!'
                 }]);
                 if (questionsLeft <= 0) {
+                    addCoins(10); // Participation reward for trying
                     setGameState('lost');
                 }
             }
@@ -126,16 +127,16 @@ export default function GuessingGame({ onClose }: GuessingGameProps) {
 
     if (gameState === 'category') {
         return (
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-3xl p-8 shadow-xl">
-                    <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <div className="max-w-2xl mx-auto">
+                <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-xl">
+                    <h2 className="text-2xl md:text-3xl font-bold text-center mb-3 md:mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                         20 Questions
                     </h2>
-                    <p className="text-gray-600 text-center mb-8">
+                    <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-8">
                         I'll think of something, and you try to guess it by asking yes/no questions!
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                         {categories.map((cat) => (
                             <motion.button
                                 key={cat.id}
@@ -143,10 +144,10 @@ export default function GuessingGame({ onClose }: GuessingGameProps) {
                                 disabled={isLoading}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="bg-gradient-to-br from-comfort-pink-100 to-comfort-lavender-100 rounded-2xl p-6 shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                                className="bg-gradient-to-br from-comfort-pink-100 to-comfort-lavender-100 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                             >
-                                <div className="text-5xl mb-3">{cat.icon}</div>
-                                <div className="font-bold text-gray-800">{cat.name}</div>
+                                <div className="text-4xl md:text-5xl mb-2 md:mb-3">{cat.icon}</div>
+                                <div className="font-bold text-sm md:text-base text-gray-800">{cat.name}</div>
                             </motion.button>
                         ))}
                     </div>
@@ -156,23 +157,23 @@ export default function GuessingGame({ onClose }: GuessingGameProps) {
     }
 
     return (
-        <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-3xl p-6 shadow-xl">
+        <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-xl">
                 {/* Header */}
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                <div className="flex justify-between items-center mb-3 md:mb-6">
+                    <h2 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                         Guessing Game
                     </h2>
-                    <div className="text-lg font-semibold text-gray-700">
+                    <div className="text-sm md:text-lg font-semibold text-gray-700">
                         Questions Left: {questionsLeft}
                     </div>
                 </div>
 
                 {/* Conversation */}
-                <div className="bg-gray-50 rounded-2xl p-4 mb-6 h-96 overflow-y-auto">
+                <div className="bg-gray-50 rounded-xl md:rounded-2xl p-2 md:p-4 mb-3 md:mb-6 h-64 md:h-96 overflow-y-auto">
                     {conversation.map((msg, idx) => (
-                        <div key={idx} className={`mb-4 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
-                            <div className={`inline-block max-w-[80%] p-3 rounded-2xl ${msg.role === 'user'
+                        <div key={idx} className={`mb-3 md:mb-4 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+                            <div className={`inline-block max-w-[80%] p-2 md:p-3 rounded-xl md:rounded-2xl text-sm md:text-base ${msg.role === 'user'
                                 ? 'bg-purple-500 text-white'
                                 : 'bg-white text-gray-800 shadow-md'
                                 }`}>
@@ -199,7 +200,7 @@ export default function GuessingGame({ onClose }: GuessingGameProps) {
                                 onChange={(e) => setUserInput(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && askQuestion()}
                                 placeholder="Ask a yes/no question..."
-                                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none"
+                                className="flex-1 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none"
                                 disabled={isLoading}
                             />
                             <button

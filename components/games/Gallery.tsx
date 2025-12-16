@@ -25,15 +25,10 @@ export default function Gallery() {
     const shopItems: ShopItem[] = [
         // Photos
         { id: 'photo-cartoon', name: 'Cute Cartoon', description: 'A heartwarming photo just for you', price: 100, image: '/assets/shop/photos/first-image.png', category: 'image' },
-        { id: 'photo-love', name: 'Love & Support', description: 'Showing love and care', price: 200, image: '/assets/shop/photos/love-support.png', category: 'image' },
         // Voice
-        { id: 'voice-morning', name: 'Morning Message', description: 'Sweet good morning', price: 180, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/morning.mp3' },
-        { id: 'voice-comfort', name: 'Comfort Voice', description: 'Soothing words', price: 250, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/comfort.mp3' },
-        { id: 'voice-encouragement', name: 'You Got This!', description: 'Encouraging message', price: 180, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/encouragement.mp3' },
-        { id: 'voice-goodnight', name: 'Goodnight', description: 'Sweet dreams', price: 200, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/goodnight.mp3' },
+        { id: 'voice-korean', name: 'Korean Song', description: 'Soothing Korean melody to relax', price: 300, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/Korean-song.mp3' },
         // Bundles
-        { id: 'bundle-daily', name: 'Daily Care Bundle', description: 'Photos + voice messages', price: 500, image: '/assets/shop/bundle-daily.png', category: 'combo' },
-        { id: 'bundle-premium', name: 'Premium Collection', description: 'All exclusive content', price: 800, image: '/assets/shop/bundle-premium.png', category: 'combo' },
+        { id: 'bundle-zootopia', name: 'Zootopia Bundle', description: 'Zootopia image + Try Everything song', price: 350, image: '/assets/shop/zootopia.jpg', category: 'combo', audioSrc: '/assets/shop/audio/tryeverything.mp3' },
     ];
 
     const myItems = shopItems.filter(item => purchasedItems.includes(item.id));
@@ -52,9 +47,9 @@ export default function Gallery() {
                 className="relative cursor-pointer"
             >
                 {/* Badge */}
-                <div className={`aspect-square rounded-xl overflow-hidden border-2 ${isFavorite ? 'border-yellow-400' : 'border-green-500'} ${item.category === 'image' ? '' : 'bg-gradient-to-br ' + (isFavorite ? 'from-yellow-100 to-orange-100' : 'from-green-100 to-emerald-100')} flex items-center justify-center`}>
-                    {item.category === 'image' ? (
-                        // Show actual image preview for image items
+                <div className={`aspect-square rounded-xl overflow-hidden border-2 ${isFavorite ? 'border-yellow-400' : 'border-green-500'} ${(item.category === 'image' || item.category === 'combo') ? '' : 'bg-gradient-to-br ' + (isFavorite ? 'from-yellow-100 to-orange-100' : 'from-green-100 to-emerald-100')} flex items-center justify-center`}>
+                    {(item.category === 'image' || item.category === 'combo') ? (
+                        // Show actual image preview for image items and bundles
                         <Image
                             src={item.image}
                             alt={item.name}
@@ -62,13 +57,13 @@ export default function Gallery() {
                             height={120}
                             className="object-cover w-full h-full"
                             onError={(e) => {
-                                e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120"%3E%3Ctext x="50%%" y="50%%" font-size="60" text-anchor="middle" dy=".3em"%3E📸%3C/text%3E%3C/svg%3E';
+                                e.currentTarget.src = `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120"%3E%3Ctext x="50%%" y="50%%" font-size="60" text-anchor="middle" dy=".3em"%3E${item.category === 'combo' ? '🎁' : '📸'}%3C/text%3E%3C/svg%3E`;
                             }}
                         />
                     ) : (
-                        // Keep emojis for voice and bundle items
+                        // Keep emoji for voice items only
                         <div className="text-3xl">
-                            {item.category === 'voice' ? '🎙️' : '🎁'}
+                            🎙️
                         </div>
                     )}
                 </div>
@@ -85,76 +80,90 @@ export default function Gallery() {
     };
 
     return (
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-            {/* Header with Avatar */}
-            <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-300 shadow-lg flex-shrink-0">
-                    <Image
-                        src={`/assets/characters/${selectedCharacter}/preview.png`}
-                        alt={selectedCharacter}
-                        width={64}
-                        height={64}
-                        className="object-cover w-full h-full"
-                        onError={(e) => {
-                            e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64"%3E%3Ctext x="50%" y="50%" font-size="32" text-anchor="middle" dy=".3em"%3E🖼️%3C/text%3E%3C/svg%3E';
-                        }}
-                    />
+        <>
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
+                {/* Header with Avatar */}
+                <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-300 shadow-lg flex-shrink-0">
+                        <Image
+                            src={`/assets/characters/${selectedCharacter}/preview.png`}
+                            alt={selectedCharacter}
+                            width={64}
+                            height={64}
+                            className="object-cover w-full h-full"
+                            onError={(e) => {
+                                e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64"%3E%3Ctext x="50%" y="50%" font-size="32" text-anchor="middle" dy=".3em"%3E🖼️%3C/text%3E%3C/svg%3E';
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                            🖼️ My Collection
+                        </h2>
+                        <p className="text-sm text-gray-600">{myItems.length} items collected</p>
+                    </div>
                 </div>
-                <div>
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                        🖼️ My Collection
-                    </h2>
-                    <p className="text-sm text-gray-600">{myItems.length} items collected</p>
-                </div>
+
+                {myItems.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">
+                        <div className="text-5xl mb-3">🎁</div>
+                        <p className="font-semibold">No items yet!</p>
+                        <p className="text-sm">Visit the shop to purchase items</p>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {/* Favorites */}
+                        {favorites.length > 0 && (
+                            <div>
+                                <h3 className="text-sm font-bold text-gray-600 mb-3">
+                                    ⭐ Favorites ({favorites.length})
+                                </h3>
+                                <div className="grid grid-cols-5 gap-3">
+                                    {favorites.map(renderBadge)}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Regular Items */}
+                        {regularItems.length > 0 && (
+                            <div>
+                                {favorites.length > 0 && (
+                                    <h3 className="text-sm font-bold text-gray-600 mb-3">
+                                        All Items ({regularItems.length})
+                                    </h3>
+                                )}
+                                <div className="grid grid-cols-5 gap-3">
+                                    {regularItems.map(renderBadge)}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
-            {myItems.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
-                    <div className="text-6xl mb-3">🎁</div>
-                    <p className="font-semibold">No items yet!</p>
-                    <p className="text-sm">Buy some from the shop →</p>
-                </div>
-            ) : (
-                <div className="space-y-6">
-                    {/* Favorites Section */}
-                    {favorites.length > 0 && (
-                        <div>
-                            <h3 className="text-sm font-bold text-yellow-600 mb-3 flex items-center gap-2">
-                                <span>⭐</span> Favorites ({favorites.length})
-                            </h3>
-                            <div className="grid grid-cols-5 gap-3">
-                                {favorites.map(renderBadge)}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Regular Items */}
-                    {regularItems.length > 0 && (
-                        <div>
-                            {favorites.length > 0 && (
-                                <h3 className="text-sm font-bold text-gray-600 mb-3">
-                                    All Items ({regularItems.length})
-                                </h3>
-                            )}
-                            <div className="grid grid-cols-5 gap-3">
-                                {regularItems.map(renderBadge)}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {/* Modal for viewing/playing */}
+            {/* Modal for viewing/playing - OUTSIDE main container for full screen */}
             <AnimatePresence>
                 {selectedItem && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedItem(null)}>
+                    <div
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 md:p-4 overflow-y-auto"
+                        onClick={() => setSelectedItem(null)}
+                    >
                         <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white rounded-3xl p-6 max-w-md w-full"
+                            className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 max-w-md w-full my-auto relative"
                         >
+                            {/* Close Button (Top Right - Mobile Friendly) */}
+                            <button
+                                onClick={() => setSelectedItem(null)}
+                                className="absolute top-2 right-2 md:top-4 md:right-4 w-8 h-8 md:w-10 md:h-10 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold z-10 transition-colors"
+                                aria-label="Close"
+                            >
+                                ✕
+                            </button>
+
                             {/* Image Display */}
                             {selectedItem.category === 'image' && (
                                 <div className="aspect-square rounded-2xl overflow-hidden mb-4">
@@ -188,18 +197,50 @@ export default function Gallery() {
 
                             {/* Bundle Display */}
                             {selectedItem.category === 'combo' && (
-                                <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-yellow-100 to-orange-100 flex items-center justify-center">
-                                    <div className="text-9xl">🎁</div>
+                                <div className="mb-4">
+                                    {/* Bundle Image */}
+                                    {selectedItem.image && (
+                                        <div className="aspect-square rounded-2xl overflow-hidden mb-4">
+                                            <Image
+                                                src={selectedItem.image}
+                                                alt={selectedItem.name}
+                                                width={400}
+                                                height={400}
+                                                className="object-cover w-full h-full"
+                                                onError={(e) => {
+                                                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Ctext x="50%%" y="50%%" font-size="100" text-anchor="middle" dy=".3em"%3E🎁%3C/text%3E%3C/svg%3E';
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* Bundle Audio Player */}
+                                    {selectedItem.audioSrc && (
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-700 mb-2">🎵 Included Audio:</p>
+                                            <audio controls className="w-full">
+                                                <source src={selectedItem.audioSrc} type="audio/mpeg" />
+                                                Your browser does not support audio playback.
+                                            </audio>
+                                        </div>
+                                    )}
+
+                                    {/* Fallback if no image or audio */}
+                                    {!selectedItem.image && !selectedItem.audioSrc && (
+                                        <div className="aspect-square rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-yellow-100 to-orange-100 flex items-center justify-center">
+                                            <div className="text-9xl">🎁</div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">{selectedItem.name}</h3>
-                            <p className="text-gray-600 mb-4">{selectedItem.description}</p>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">{selectedItem.name}</h3>
+                            <p className="text-sm md:text-base text-gray-600 mb-4">{selectedItem.description}</p>
 
                             {/* Favorite Button */}
                             <button
                                 onClick={() => toggleFavorite(selectedItem.id)}
-                                className={`w-full py-3 rounded-xl font-semibold mb-3 transition-colors ${favoriteItems.includes(selectedItem.id)
+                                className={`w-full py-2 md:py-3 rounded-xl font-semibold mb-3 text-sm md:text-base transition-colors ${favoriteItems.includes(selectedItem.id)
                                     ? 'bg-yellow-500 text-white hover:bg-yellow-600'
                                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                     }`}
@@ -209,7 +250,7 @@ export default function Gallery() {
 
                             <button
                                 onClick={() => setSelectedItem(null)}
-                                className="w-full py-3 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition-colors"
+                                className="w-full py-2 md:py-3 bg-purple-500 text-white text-sm md:text-base rounded-xl hover:bg-purple-600 transition-colors"
                             >
                                 Close
                             </button>
@@ -217,6 +258,6 @@ export default function Gallery() {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+        </>
     );
 }

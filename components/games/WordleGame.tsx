@@ -28,6 +28,25 @@ export default function WordleGame({ onClose }: WordleGameProps) {
         startNewGame();
     }, []);
 
+    // Add physical keyboard support
+    useEffect(() => {
+        const handlePhysicalKeyboard = (e: KeyboardEvent) => {
+            if (gameState !== 'playing') return;
+
+            if (e.key === 'Enter') {
+                handleKeyPress('ENTER');
+            } else if (e.key === 'Backspace') {
+                handleKeyPress('BACK');
+            } else if (/^[a-zA-Z]$/.test(e.key)) {
+                handleKeyPress(e.key.toUpperCase());
+            }
+        };
+
+        window.addEventListener('keydown', handlePhysicalKeyboard);
+        return () => window.removeEventListener('keydown', handlePhysicalKeyboard);
+    }, [gameState, currentGuess, targetWord, guesses, attempts]); // Dependencies for handleKeyPress
+
+
     const startNewGame = async () => {
         setGameState('loading');
         try {
@@ -89,6 +108,7 @@ export default function WordleGame({ onClose }: WordleGameProps) {
             addCoins(coinsEarned);
             setTimeout(() => setGameState('won'), 500);
         } else if (attempts + 1 >= maxAttempts) {
+            addCoins(10); // Participation reward for trying
             setTimeout(() => setGameState('lost'), 500);
         }
 
@@ -123,10 +143,10 @@ export default function WordleGame({ onClose }: WordleGameProps) {
     ];
 
     return (
-        <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-3xl p-6 shadow-xl">
+        <div className="max-w-xl mx-auto">
+            <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-xl">
                 {/* Header */}
-                <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                <h2 className="text-xl md:text-3xl font-bold text-center mb-3 md:mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                     Wordle
                 </h2>
 
@@ -139,9 +159,9 @@ export default function WordleGame({ onClose }: WordleGameProps) {
                 {gameState !== 'loading' && (
                     <>
                         {/* Game Grid */}
-                        <div className="mb-8">
+                        <div className="mb-4 md:mb-8">
                             {[...Array(maxAttempts)].map((_, rowIndex) => (
-                                <div key={rowIndex} className="flex gap-2 justify-center mb-2">
+                                <div key={rowIndex} className="flex gap-1 md:gap-2 justify-center mb-1 md:mb-2">
                                     {[...Array(5)].map((_, colIndex) => {
                                         const letter = guesses[rowIndex]?.[colIndex];
                                         const isCurrentRow = rowIndex === attempts && gameState === 'playing';
@@ -153,7 +173,7 @@ export default function WordleGame({ onClose }: WordleGameProps) {
                                                 initial={letter ? { rotateX: 0 } : {}}
                                                 animate={letter ? { rotateX: 360 } : {}}
                                                 transition={{ duration: 0.6, delay: colIndex * 0.1 }}
-                                                className={`w-14 h-14 border-2 rounded-lg flex items-center justify-center text-2xl font-bold ${letter ? getLetterColor(letter.state) : currentChar ? 'border-gray-400 bg-gray-50' : 'border-gray-300'
+                                                className={`w-10 h-10 md:w-14 md:h-14 border-2 rounded-lg flex items-center justify-center text-lg md:text-2xl font-bold ${letter ? getLetterColor(letter.state) : currentChar ? 'border-gray-400 bg-gray-50' : 'border-gray-300'
                                                     }`}
                                             >
                                                 {letter?.char || currentChar}
@@ -164,24 +184,33 @@ export default function WordleGame({ onClose }: WordleGameProps) {
                             ))}
                         </div>
 
-                        {/* Virtual Keyboard */}
+
+                        {/* Virtual Keyboard - Hidden on mobile, visible on desktop */}
                         {gameState === 'playing' && (
-                            <div className="space-y-2">
-                                {keyboard.map((row, i) => (
-                                    <div key={i} className="flex gap-1 justify-center">
-                                        {row.map((key) => (
-                                            <button
-                                                key={key}
-                                                onClick={() => handleKeyPress(key)}
-                                                className={`${key.length > 1 ? 'px-4' : 'px-3'
-                                                    } py-3 rounded-lg font-semibold text-sm bg-gray-200 hover:bg-gray-300 transition-colors`}
-                                            >
-                                                {key === 'BACK' ? '⌫' : key}
-                                            </button>
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
+                            <>
+                                {/* Mobile instruction */}
+                                <div className="md:hidden text-center text-sm text-gray-600 mb-4">
+                                    Use your phone keyboard to type
+                                </div>
+
+                                {/* Virtual Keyboard - Hidden on mobile */}
+                                <div className="hidden md:block space-y-2">
+                                    {keyboard.map((row, i) => (
+                                        <div key={i} className="flex gap-1 justify-center">
+                                            {row.map((key) => (
+                                                <button
+                                                    key={key}
+                                                    onClick={() => handleKeyPress(key)}
+                                                    className={`${key.length > 1 ? 'px-2 md:px-4' : 'px-2 md:px-3'
+                                                        } py-2 md:py-3 rounded-lg font-semibold text-xs md:text-sm bg-gray-200 hover:bg-gray-300 transition-colors`}
+                                                >
+                                                    {key === 'BACK' ? '⌫' : key}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
                         )}
 
                         {/* Game Over Messages */}

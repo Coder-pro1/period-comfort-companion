@@ -27,8 +27,8 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
         if (saved) {
             setCoins(parseInt(saved));
         } else {
-            // Start with 1000 coins for testing
-            setCoins(1000);
+            // Start with 0 coins
+            setCoins(0);
         }
         if (savedItems) setPurchasedItems(JSON.parse(savedItems));
         if (savedFavorites) setFavoriteItems(JSON.parse(savedFavorites));

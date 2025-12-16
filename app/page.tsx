@@ -29,16 +29,6 @@ export default function Home() {
                     <p className="text-lg md:text-xl text-pink-200 font-medium italic drop-shadow">
                         Your safe space for comfort, care, and understanding 💕
                     </p>
-
-                    {/* Games Link */}
-                    <div className="mt-4">
-                        <a
-                            href="/games"
-                            className="inline-block px-8 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                        >
-                            🎮 Play Games & Earn Coins
-                        </a>
-                    </div>
                 </header>
 
 

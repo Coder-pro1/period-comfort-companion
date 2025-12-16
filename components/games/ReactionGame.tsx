@@ -72,7 +72,8 @@ export default function ReactionGame({ onClose }: ReactionGameProps) {
     };
 
     const finishGame = () => {
-        addCoins(totalCoins);
+        // Add participation reward (5 coins for completing the game)
+        addCoins(totalCoins + 5);
         onClose();
     };
 
@@ -91,31 +92,31 @@ export default function ReactionGame({ onClose }: ReactionGameProps) {
     };
 
     return (
-        <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-3xl p-8 shadow-xl">
+        <div className="max-w-xl mx-auto">
+            <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-8 shadow-xl">
                 {/* Header */}
-                <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                <h2 className="text-xl md:text-3xl font-bold text-center mb-2 md:mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                     Quick Tap
                 </h2>
-                <p className="text-gray-600 text-center mb-8">
+                <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-8">
                     Click as fast as you can when the screen turns green!
                 </p>
 
                 {/* Stats */}
-                <div className="flex justify-around mb-8 text-center">
+                <div className="flex justify-around mb-4 md:mb-8 text-center">
                     <div>
-                        <div className="text-2xl font-bold text-purple-600">{round}</div>
-                        <div className="text-sm text-gray-600">Rounds</div>
+                        <div className="text-lg md:text-2xl font-bold text-purple-600">{round}</div>
+                        <div className="text-xs md:text-sm text-gray-600">Rounds</div>
                     </div>
                     <div>
-                        <div className="text-2xl font-bold text-green-600">{totalCoins}</div>
-                        <div className="text-sm text-gray-600">Coins Earned</div>
+                        <div className="text-lg md:text-2xl font-bold text-green-600">{totalCoins}</div>
+                        <div className="text-xs md:text-sm text-gray-600">Coins Earned</div>
                     </div>
                     <div>
-                        <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-lg md:text-2xl font-bold text-blue-600">
                             {bestTime ? `${bestTime}ms` : '-'}
                         </div>
-                        <div className="text-sm text-gray-600">Best Time</div>
+                        <div className="text-xs md:text-sm text-gray-600">Best Time</div>
                     </div>
                 </div>
 
@@ -123,7 +124,7 @@ export default function ReactionGame({ onClose }: ReactionGameProps) {
                 <motion.button
                     onClick={handleClick}
                     whileHover={{ scale: gameState === 'idle' ? 1.02 : 1 }}
-                    className={`w-full h-96 rounded-3xl flex flex-col items-center justify-center text-white font-bold text-2xl transition-all ${gameState === 'idle' ? 'bg-gradient-to-r from-purple-500 to-pink-500 cursor-pointer hover:shadow-xl'
+                    className={`w-full h-64 md:h-96 rounded-2xl md:rounded-3xl flex flex-col items-center justify-center text-white font-bold text-lg md:text-2xl transition-all ${gameState === 'idle' ? 'bg-gradient-to-r from-purple-500 to-pink-500 cursor-pointer hover:shadow-xl'
                         : gameState === 'waiting' ? 'bg-red-500 cursor-wait'
                             : gameState === 'ready' ? 'bg-green-500 cursor-pointer animate-pulse'
                                 : gameState === 'too-early' ? 'bg-orange-500 cursor-not-allowed'

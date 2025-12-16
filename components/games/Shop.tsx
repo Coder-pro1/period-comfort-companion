@@ -29,17 +29,13 @@ export default function Shop() {
     const shopItems: ShopItem[] = [
         // Photos
         { id: 'photo-cartoon', name: 'Cute Cartoon', description: 'A heartwarming photo just for you', price: 100, image: '/assets/shop/photos/first-image.png', category: 'image' },
-        { id: 'photo-love', name: 'Love & Support', description: 'Showing love and care', price: 200, image: '/assets/shop/photos/love-support.png', category: 'image' },
 
         // Voice Messages
-        { id: 'voice-morning', name: 'Morning Message', description: 'Sweet good morning', price: 180, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/morning.mp3' },
-        { id: 'voice-comfort', name: 'Comfort Voice', description: 'Soothing words', price: 250, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/comfort.mp3' },
-        { id: 'voice-encouragement', name: 'You Got This!', description: 'Encouraging message', price: 180, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/encouragement.mp3' },
-        { id: 'voice-goodnight', name: 'Goodnight', description: 'Sweet dreams', price: 200, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/goodnight.mp3' },
+        { id: 'voice-korean', name: 'Korean Song', description: 'Soothing Korean melody to relax', price: 300, image: '/assets/shop/audio-preview.png', category: 'voice', audioSrc: '/assets/shop/audio/Korean-song.mp3' },
+
 
         // Bundles
-        { id: 'bundle-daily', name: 'Daily Care Bundle', description: 'Photos + voice messages', price: 500, image: '/assets/shop/bundle-daily.png', category: 'combo' },
-        { id: 'bundle-premium', name: 'Premium Collection', description: 'All exclusive content', price: 800, image: '/assets/shop/bundle-premium.png', category: 'combo' },
+        { id: 'bundle-zootopia', name: 'Zootopia Bundle', description: 'Zootopia image + Try Everything song', price: 350, image: '/assets/shop/zootopia.jpg', category: 'combo', audioSrc: '/assets/shop/audio/tryeverything.mp3' },
     ];
 
     const handlePurchase = (item: ShopItem) => {
