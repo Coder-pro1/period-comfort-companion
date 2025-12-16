@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Caveat } from "next/font/google";
 import "./globals.css";
 import { ComfortProvider } from "@/contexts/ComfortContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${inter.variable} ${caveat.variable} font-sans antialiased`}>
                 <ComfortProvider>
-                    {children}
+                    <CurrencyProvider>
+                        {children}
+                    </CurrencyProvider>
                 </ComfortProvider>
             </body>
         </html>

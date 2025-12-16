@@ -6,7 +6,6 @@ import PeriodPalChat from '@/components/PeriodPalChat';
 import VirtualCarePackage from '@/components/VirtualCarePackage';
 import CalmCorner from '@/components/CalmCorner';
 import RantJournal from '@/components/RantJournal';
-import EmergencyComfort from '@/components/EmergencyComfort';
 import EasterEggs from '@/components/EasterEggs';
 import JokeEngine from '@/components/JokeEngine';
 
@@ -30,6 +29,16 @@ export default function Home() {
                     <p className="text-lg md:text-xl text-pink-200 font-medium italic drop-shadow">
                         Your safe space for comfort, care, and understanding 💕
                     </p>
+
+                    {/* Games Link */}
+                    <div className="mt-4">
+                        <a
+                            href="/games"
+                            className="inline-block px-8 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                        >
+                            🎮 Play Games & Earn Coins
+                        </a>
+                    </div>
                 </header>
 
 
@@ -39,9 +48,14 @@ export default function Home() {
                 {/* Character Selection */}
                 <CharacterSelection />
 
-                {/* Emergency SOS - Fixed Position at Bottom Right */}
+                {/* Games - Fixed Position at Bottom Right */}
                 <div className="fixed bottom-6 right-6 z-50">
-                    <EmergencyComfort />
+                    <a
+                        href="/games"
+                        className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 text-3xl"
+                    >
+                        🎮
+                    </a>
                 </div>
 
 
